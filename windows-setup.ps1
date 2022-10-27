@@ -1,3 +1,4 @@
+#Requires -Version 5.1
 #Requires -RunAsAdministrator
 #Requires -Module Cobalt
 
