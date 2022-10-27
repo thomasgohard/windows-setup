@@ -13,13 +13,13 @@ foreach ($app in $apps) {
 	Write-Host "`t$($app.id): " -NoNewline
 	
 	$packageDetails = Get-WinGetPackage -ID $app.id -Exact
-	if ($packageDetails -ne $null) {
+	if ($null -ne $packageDetails) {
 		Write-Host "Already installed."
 	} else {
 		Write-Host "Not installed. " -NoNewline
 
 		$packageAvailable = Find-WinGetPackage -ID $app.id -Exact
-		if ($packageAvailable -ne $null) {
+		if ($null -ne $packageAvailable) {
 			Write-Host "Application found in $appSource. " -NoNewline
 
 			Install-WinGetPackage -ID $app.id -Exact
