@@ -1,20 +1,31 @@
 #Requires -RunAsAdministrator
+#Requires -Module Cobalt
 
+$appSource = "WinGet"
 $apps = @(
-	@{ id = "" }
-);
+	@{ id = "Git.Git" },
+	@{ id = "GitHub.cli" }
+)
 
+Write-Host "Installing applications:"
 foreach ($app in $apps) {
-	Get-InstallStatus($app.id);
-}
+	Write-Host "`t$($app.id): " -NoNewline
+	
+	$packageDetails = Get-WinGetPackage -ID $app.id -Exact
+	if ($packageDetails -ne $null) {
+		Write-Host "Already installed."
+	} else {
+		Write-Host "Not installed. " -NoNewline
 
-function Get-InstallStatus($appId) {
-    $status = "Not installed";
-	$installedApps = winget list --id "$appId" | Select-Object -Last 1;
+		$packageAvailable = Find-WinGetPackage -ID $app.id -Exact
+		if ($packageAvailable -ne $null) {
+			Write-Host "Application found in $appSource. " -NoNewline
 
-    if ($installedApps.Contains($appId)) {
-        $status = "Installed"
-    }
+			Install-WinGetPackage -ID $app.id -Exact
 
-    return $status;
+			Write-Host "$($app.id) installed."
+		} else {
+			Write-Host "Application not available from $appSource."
+		}
+	}
 }
