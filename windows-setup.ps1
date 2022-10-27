@@ -19,14 +19,14 @@ foreach ($app in $apps) {
 		Write-Host "Not installed. " -NoNewline
 
 		$packageAvailable = Find-WinGetPackage -ID $app.id -Exact
-		if ($null -ne $packageAvailable) {
+		if ($null -eq $packageAvailable) {
+			Write-Host "Application not available from $appSource."
+		} else {
 			Write-Host "Application found in $appSource. " -NoNewline
 
 			Install-WinGetPackage -ID $app.id -Exact
 
 			Write-Host "$($app.id) installed."
-		} else {
-			Write-Host "Application not available from $appSource."
 		}
 	}
 }
