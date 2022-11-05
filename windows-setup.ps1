@@ -4,13 +4,14 @@
 
 $appSource = "WinGet"
 $apps = @(
-	@{ id = "Git.Git" },
-	@{ id = "GitHub.cli" }
+	@{ id = "Git.Git"; name = "Git" },
+	@{ id = "GitHub.cli"; name = "GitHub CLI" }
 )
+$overwrittingCharacter = " "
 
 Write-Host "Installing applications:"
 foreach ($app in $apps) {
-	Write-Host "`t$($app.id): " -NoNewline
+	Write-Host "`t$($app.name): " -NoNewline
 	
 	$packageDetails = Get-WinGetPackage -ID $app.id -Exact
 	if ($null -ne $packageDetails) {
@@ -34,11 +35,8 @@ foreach ($app in $apps) {
 			$host.UI.RawUI.CursorPosition = $cursorPosition
 
 			Write-Host "installed." -NoNewline
-			$charsToOverwrite = $lineLength - ($host.UI.RawUI.CursorPosition.X - $cursorPosition.X)
-			$overwriteString = " " * $charsToOverwrite
-			<#for ($i = 0; $i -lt $charsToOverwrite; $i++) {
-				Write-Host " " -NoNewline
-			}#>
+			$charsToOverwrite = [math]::Max(0, $lineLength - ($host.UI.RawUI.CursorPosition.X - $cursorPosition.X))
+			$overwriteString = $overwrittingCharacter * $charsToOverwrite
 			Write-Host $overwriteString
 		}
 	}
