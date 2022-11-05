@@ -27,16 +27,19 @@ foreach ($app in $apps) {
 			Write-Host "Application not available from $appSource."
 		} else {
 			Write-Host "Application found in $appSource. " -NoNewline
+			$lineLength = $host.UI.RawUI.CursorPosition.X - $cursorPosition.X
 			$host.UI.RawUI.CursorPosition = $cursorPosition
 
 			Install-WinGetPackage -ID $app.id -Exact
 			$host.UI.RawUI.CursorPosition = $cursorPosition
 
-			Write-Host "$($app.id) installed." -NoNewline
-			for ($i = 0; $i -lt 9; $i++) {
+			Write-Host "installed." -NoNewline
+			$charsToOverwrite = $lineLength - ($host.UI.RawUI.CursorPosition.X - $cursorPosition.X)
+			$overwriteString = " " * $charsToOverwrite
+			<#for ($i = 0; $i -lt $charsToOverwrite; $i++) {
 				Write-Host " " -NoNewline
-			}
-			Write-Host ""
+			}#>
+			Write-Host $overwriteString
 		}
 	}
 }
