@@ -5,7 +5,8 @@
 $appSource = "WinGet"
 $apps = @(
 	@{ id = "Git.Git"; name = "Git" },
-	@{ id = "GitHub.cli"; name = "GitHub CLI" }
+	@{ id = "GitHub.cli"; name = "GitHub CLI" },
+	@{ id = "ScummVM.ScummVM"; name = "ScummVM" }
 )
 $overwrittingCharacter = " "
 
