@@ -2,13 +2,21 @@
 #Requires -RunAsAdministrator
 #Requires -Module Cobalt
 
+$computerName = ""
 $appSource = "WinGet"
 $apps = @(
 	@{ id = "Git.Git"; name = "Git" },
 	@{ id = "GitHub.cli"; name = "GitHub CLI" },
 	@{ id = "ScummVM.ScummVM"; name = "ScummVM" }
 )
-$overwrittingCharacter = " "
+$overwritingCharacter = " "
+$rebootNeeded = $false
+
+Write-Host "Setting computer name: " -NoNewline
+if ($env:COMPUTERNAME -ne $computerName) {
+	Rename-Computer -NewName $computerName
+}
+Write-Host "Done."
 
 Write-Host "Installing applications:"
 foreach ($app in $apps) {
@@ -37,7 +45,7 @@ foreach ($app in $apps) {
 
 			Write-Host "installed." -NoNewline
 			$charsToOverwrite = [math]::Max(0, $lineLength - ($host.UI.RawUI.CursorPosition.X - $cursorPosition.X))
-			$overwriteString = $overwrittingCharacter * $charsToOverwrite
+			$overwriteString = $overwritingCharacter * $charsToOverwrite
 			Write-Host $overwriteString
 		}
 	}
