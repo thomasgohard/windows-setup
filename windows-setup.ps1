@@ -15,6 +15,7 @@ $rebootNeeded = $false
 Write-Host "Setting computer name: " -NoNewline
 if ($env:COMPUTERNAME -ne $computerName) {
 	Rename-Computer -NewName $computerName
+	$rebootNeeded = $true
 }
 Write-Host "Done."
 
@@ -49,4 +50,8 @@ foreach ($app in $apps) {
 			Write-Host $overwriteString
 		}
 	}
+}
+
+if ($rebootNeeded) {
+	Restart-Computer
 }
